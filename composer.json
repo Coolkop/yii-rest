@@ -1,0 +1,33 @@
+{
+  "name": "coolkop/yii-rest",
+  "description": "REST API",
+  "type": "library",
+  "license": "BSD",
+  "authors": [
+    {
+      "name": "coolkop",
+      "email": "mirrleon@gmail.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "php": "^7.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "frontend\\": "frontend/",
+      "backend\\": "backend/",
+      "console\\": "console/",
+      "common\\": "common/",
+      "core\\": "core/",
+      "api\\": "api",
+      "ProfileBundle\\": "src/ProfileBundle/"
+    }
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    }
+  ]
+}
