@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Coolkop\Rest\Controller;
+namespace Coolkop\Rest\Handler;
 
 
-use Coolkop\Rest\Dto\ResponseInterface;
-use Coolkop\Rest\Dto\RequestInterface;
+use Coolkop\Rest\Dto\Response\ResponseInterface;
+use Coolkop\Rest\Dto\Request\RequestInterface;
 use Coolkop\Rest\Service\ServiceInterface;
 
 interface RequestHandlerInterface

@@ -4,8 +4,8 @@
 namespace Coolkop\Rest\Validator;
 
 
-use Coolkop\Rest\Dto\ResponseInterface;
-use Coolkop\Rest\Dto\RequestInterface;
+use Coolkop\Rest\Dto\Response\ResponseInterface;
+use Coolkop\Rest\Dto\Request\RequestInterface;
 
 interface RequestValidatorInterface
 {

@@ -11,8 +11,8 @@
   ],
   "minimum-stability": "stable",
   "require": {
-    "php": "^7",
-    "yiisoft/yii2": "^2.0"
+    "php": "~7.2",
+    "yiisoft/yii2": "~2.0.15"
   },
   "autoload": {
     "psr-4": {

@@ -4,12 +4,12 @@
 namespace Coolkop\Rest\Validator;
 
 
-use Coolkop\Rest\Dto\ErrorInterface;
-use Coolkop\Rest\Dto\ValidationError;
-use Coolkop\Rest\Dto\ValidationErrorResponse;
-use Coolkop\Rest\Dto\RequestInterface;
-use Coolkop\Rest\Validator\RequestValidatorInterface;
-use Coolkop\Rest\Dto\ResponseInterface;
+use Coolkop\Rest\Dto\Request\RequestInterface;
+use Coolkop\Rest\Dto\Response\ViolationInterface;
+use Coolkop\Rest\Dto\Response\ResponseInterface;
+use Coolkop\Rest\Dto\Response\Violation;
+use Coolkop\Rest\Dto\Response\ViolationListResponse;
+use Coolkop\Rest\Enumeration\ErrorCode;
 use yii\base\Model;
 
 abstract class FormModelValidator extends Model implements RequestValidatorInterface
@@ -47,8 +47,10 @@ abstract class FormModelValidator extends Model implements RequestValidatorInter
      */
     public function getErrorResponse(): ResponseInterface
     {
-        return (new ValidationErrorResponse())
-            ->setErrorList(
+        return (new ViolationListResponse())
+            ->setCode(ErrorCode::REQUEST_DATA_VALIDATION_ERROR)
+            ->setMessage(ErrorCode::getMessage(ErrorCode::REQUEST_DATA_VALIDATION_ERROR))
+            ->setViolationList(
                 $this->createErrorList()
             );
     }
@@ -69,7 +71,7 @@ abstract class FormModelValidator extends Model implements RequestValidatorInter
     abstract protected function getAutoAssembleRequest(): AutoAssembleRequestInterface;
 
     /**
-     * @return ErrorInterface[]
+     * @return ViolationInterface[]
      */
     private function createErrorList(): array
     {
@@ -86,11 +88,11 @@ abstract class FormModelValidator extends Model implements RequestValidatorInter
      * @param string $attribute
      * @param string[] $errorMessages
      *
-     * @return ErrorInterface
+     * @return ViolationInterface
      */
-    private function createError(string $attribute, array $errorMessages): ErrorInterface
+    private function createError(string $attribute, array $errorMessages): ViolationInterface
     {
-        return (new ValidationError())
+        return (new Violation())
             ->setAttribute($attribute)
             ->setErrorMessages($errorMessages);
     }

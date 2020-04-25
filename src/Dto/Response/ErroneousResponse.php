@@ -1,11 +1,15 @@
 <?php
 
 
-namespace Coolkop\Rest\Dto;
+namespace Coolkop\Rest\Dto\Response;
 
+
+use Coolkop\Rest\Service\SerializableResponseTrait;
 
 class ErroneousResponse implements ResponseInterface
 {
+    use SerializableResponseTrait;
+
     /**
      * @var string
      */
@@ -54,16 +58,5 @@ class ErroneousResponse implements ResponseInterface
         $this->message = $message;
 
         return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function jsonSerialize()
-    {
-        return [
-            'code' => $this->code,
-            'message' => $this->message,
-        ];
     }
 }

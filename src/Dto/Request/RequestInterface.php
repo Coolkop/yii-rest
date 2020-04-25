@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Coolkop\Rest\Dto;
+namespace Coolkop\Rest\Dto\Request;
 
 
 interface RequestInterface

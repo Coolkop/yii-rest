@@ -4,12 +4,12 @@
 namespace Coolkop\Rest\Bootstrap;
 
 
-use Coolkop\Rest\Controller\RequestHandler;
-use Coolkop\Rest\Controller\RequestHandlerInterface;
+use Coolkop\Rest\Handler\RequestHandler;
+use Coolkop\Rest\Handler\RequestHandlerInterface;
 use Yii;
 use yii\base\BootstrapInterface;
 
-class FrameworkBootstrap implements BootstrapInterface
+class RestBootstrap implements BootstrapInterface
 {
     /**
      * @inheritDoc

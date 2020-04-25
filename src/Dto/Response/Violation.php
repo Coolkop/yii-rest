@@ -1,13 +1,15 @@
 <?php
 
 
-namespace Coolkop\Rest\Dto;
+namespace Coolkop\Rest\Dto\Response;
 
 
-use Coolkop\Rest\Dto\ErrorInterface;
+use Coolkop\Rest\Service\SerializableResponseTrait;
 
-class ValidationError implements ErrorInterface
+class Violation implements ViolationInterface
 {
+    use SerializableResponseTrait;
+
     /**
      * @var string
      */
@@ -29,9 +31,9 @@ class ValidationError implements ErrorInterface
     /**
      * @param string $attribute
      *
-     * @return ValidationError
+     * @return Violation
      */
-    public function setAttribute(string $attribute): ValidationError
+    public function setAttribute(string $attribute): Violation
     {
         $this->attribute = $attribute;
 
@@ -49,23 +51,12 @@ class ValidationError implements ErrorInterface
     /**
      * @param string[] $errorMessages
      *
-     * @return ValidationError
+     * @return Violation
      */
-    public function setErrorMessages(array $errorMessages): ValidationError
+    public function setErrorMessages(array $errorMessages): Violation
     {
         $this->errorMessages = $errorMessages;
 
         return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function jsonSerialize()
-    {
-        return [
-            'attribute' => $this->attribute,
-            'errorMessages' => $this->errorMessages,
-        ];
     }
 }

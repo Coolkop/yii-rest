@@ -4,8 +4,8 @@
 namespace Coolkop\Rest\Service;
 
 
-use Coolkop\Rest\Dto\RequestInterface;
-use Coolkop\Rest\Dto\ResponseInterface;
+use Coolkop\Rest\Dto\Request\RequestInterface;
+use Coolkop\Rest\Dto\Response\ResponseInterface;
 use Coolkop\Rest\Exception\NotFoundException;
 use Coolkop\Rest\Exception\RepositoryException;
 use Coolkop\Rest\Exception\ServiceException;

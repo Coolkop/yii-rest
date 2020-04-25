@@ -4,15 +4,31 @@
 namespace Coolkop\Rest\Controller;
 
 
-use Coolkop\Rest\Dto\ResponseInterface;
+use Coolkop\Rest\Dto\Response\ResponseInterface;
+use Coolkop\Rest\Extractor\RequestDataExtractorInterface;
+use Coolkop\Rest\Handler\RequestHandlerInterface;
 use Coolkop\Rest\Service\ServiceInterface;
 use Coolkop\Rest\Validator\RequestValidatorInterface;
 use Yii;
 use yii\rest\Controller;
-use yii\web\Request;
 
-abstract class ConfigurableController extends Controller
+class ConfigurableController extends Controller
 {
+    /**
+     * @var RequestValidatorInterface
+     */
+    public $validator;
+
+    /**
+     * @var ServiceInterface
+     */
+    public $service;
+
+    /**
+     * @var RequestDataExtractorInterface
+     */
+    public $requestDataExtractor;
+
     /**
      * @var RequestHandlerInterface
      */
@@ -31,36 +47,31 @@ abstract class ConfigurableController extends Controller
      */
     final public function actionPerform(): ResponseInterface
     {
-        if (!$this->getRequestValidator()->validateRequest($this->getRequestData())) {
-            return $this->getRequestValidator()->getErrorResponse();
+        if (!$this->validator->validateRequest($this->extractRequestData())) {
+            Yii::$app->response->setStatusCode($this->getValidationErrorStatusCode());
+
+            return $this->validator->getErrorResponse();
         }
 
         return $this->requestHandler->handle(
-            $this->getService(),
-            $this->getRequestValidator()->getValidRequest()
+            $this->service,
+            $this->validator->getValidRequest()
         );
+    }
+
+    /**
+     * @return int
+     */
+    protected function getValidationErrorStatusCode(): int
+    {
+        return 400;
     }
 
     /**
      * @return mixed[]
      */
-    abstract protected function getRequestData(): array;
-
-    /**
-     * @return ServiceInterface
-     */
-    abstract protected function getService(): ServiceInterface;
-
-    /**
-     * @return RequestValidatorInterface
-     */
-    abstract protected function getRequestValidator(): RequestValidatorInterface;
-
-    /**
-     * @return Request
-     */
-    final protected function getRequest(): Request
+    private function extractRequestData(): array
     {
-        return Yii::$app->getRequest();
+        return $this->requestDataExtractor->extract(Yii::$app->getRequest());
     }
 }

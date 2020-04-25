@@ -20,7 +20,7 @@ trait GuardNoResult
     {
         if (null === $activeRecord) {
             throw new NotFoundException(
-                ErrorCode::$messages[ErrorCode::NO_RECORD_ERROR],
+                ErrorCode::getMessage(ErrorCode::NO_RECORD_ERROR),
                 ErrorCode::NO_RECORD_ERROR
             );
         }

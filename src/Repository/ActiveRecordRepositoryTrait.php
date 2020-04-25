@@ -23,7 +23,7 @@ trait ActiveRecordRepositoryTrait
             $activeRecord->save(false);
         } catch (Throwable $exception) {
             throw new RepositoryException(
-                ErrorCode::$messages[ErrorCode::SAVING_ERROR],
+                ErrorCode::getMessage(ErrorCode::SAVING_ERROR),
                 ErrorCode::SAVING_ERROR,
                 $exception
             );
@@ -42,7 +42,7 @@ trait ActiveRecordRepositoryTrait
             $activeRecord->update(false);
         } catch (Throwable $exception) {
             throw new RepositoryException(
-                ErrorCode::$messages[ErrorCode::SAVING_ERROR],
+                ErrorCode::getMessage(ErrorCode::SAVING_ERROR),
                 ErrorCode::SAVING_ERROR,
                 $exception
             );
