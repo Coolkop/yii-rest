@@ -6,6 +6,7 @@ namespace Coolkop\Rest\Controller;
 
 use Coolkop\Rest\Dto\ErroneousResponse;
 use Coolkop\Rest\Dto\ResponseInterface;
+use Coolkop\Rest\Exception\RepositoryException;
 use Coolkop\Rest\Exception\ServiceException;
 use Coolkop\Rest\Exception\NotFoundException;
 use Coolkop\Rest\Controller\RequestHandlerInterface;
@@ -22,18 +23,12 @@ class RequestHandler implements RequestHandlerInterface
     {
         try {
             return $service->perform($request);
-        } catch (ServiceException $exception) {
-            Yii::$app->errorHandler->handleException($exception);
-            Yii::$app->response->setStatusCode(400);
+        } catch (ServiceException | NotFoundException | RepositoryException $exception) {
+            Yii::$app->errorHandler->logException($exception);
+            Yii::$app->response->setStatusCode($exception->getHttpCode());
 
             return (new ErroneousResponse())
-                ->setCode($exception->getCode())
-                ->setMessage($exception->getMessage());
-        } catch (NotFoundException $exception) {
-            Yii::$app->response->setStatusCode(404);
-
-            return (new ErroneousResponse())
-                ->setCode($exception->getCode())
+                ->setCode($exception->getRestCode())
                 ->setMessage($exception->getMessage());
         }
     }

@@ -4,9 +4,13 @@
 namespace Coolkop\Rest\Exception;
 
 
-use Exception;
-
-class NotFoundException extends Exception
+class NotFoundException extends BaseException
 {
-    /*_*/
+    /**
+     * @inheritDoc
+     */
+    public function getHttpCode(): int
+    {
+        return 404;
+    }
 }

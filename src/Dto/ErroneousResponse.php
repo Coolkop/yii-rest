@@ -4,8 +4,6 @@
 namespace Coolkop\Rest\Dto;
 
 
-use Coolkop\Rest\Dto\ResponseInterface;
-
 class ErroneousResponse implements ResponseInterface
 {
     /**

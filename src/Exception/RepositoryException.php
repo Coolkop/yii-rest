@@ -4,13 +4,13 @@
 namespace Coolkop\Rest\Exception;
 
 
-class ServiceException extends BaseException
+class RepositoryException extends BaseException
 {
     /**
      * @inheritDoc
      */
     public function getHttpCode(): int
     {
-        return 400;
+        return 500;
     }
 }
