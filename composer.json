@@ -11,17 +11,12 @@
   ],
   "minimum-stability": "stable",
   "require": {
-    "php": "^7.2"
+    "php": "^7.2",
+    "yiisoft/yii2": "^2.0"
   },
   "autoload": {
     "psr-4": {
-      "frontend\\": "frontend/",
-      "backend\\": "backend/",
-      "console\\": "console/",
-      "common\\": "common/",
-      "core\\": "core/",
-      "api\\": "api",
-      "ProfileBundle\\": "src/ProfileBundle/"
+      "Coolkol\\Rest\\": "src"
     }
   },
   "repositories": [

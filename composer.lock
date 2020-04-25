@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "5cd5da44ea8da94ff59d004ff302b2ea",
+    "content-hash": "abac707071b9b059e24c0db8e08338a6",
     "packages": [
         {
             "name": "bower-asset/inputmask",
