@@ -4,6 +4,7 @@
 namespace Coolkop\Rest\Exception;
 
 
+use Coolkop\Rest\Enumeration\BaseEnumeration;
 use Exception;
 use Throwable;
 
@@ -15,15 +16,14 @@ abstract class BaseException extends Exception
     private $restCode;
 
     /**
-     * @param string $message
-     * @param string $restCode
+     * @param BaseEnumeration $errorEnumeration
      * @param Throwable|null $previous
      */
-    public function __construct(string $message, string $restCode, Throwable $previous = null)
+    public function __construct(BaseEnumeration $errorEnumeration, Throwable $previous = null)
     {
-        parent::__construct($message, 0, $previous);
+        parent::__construct($errorEnumeration->getName(), 0, $previous);
 
-        $this->restCode = $restCode;
+        $this->restCode = $errorEnumeration->getValue();
     }
 
     /**
@@ -37,13 +37,5 @@ abstract class BaseException extends Exception
     public function getRestCode(): string
     {
         return $this->restCode;
-    }
-
-    /**
-     * @param string $restCode
-     */
-    public function setRestCode(string $restCode): void
-    {
-        $this->restCode = $restCode;
     }
 }

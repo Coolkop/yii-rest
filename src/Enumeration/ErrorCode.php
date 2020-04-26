@@ -4,27 +4,58 @@
 namespace Coolkop\Rest\Enumeration;
 
 
-final class ErrorCode
+final class ErrorCode extends BaseEnumeration
 {
-    public const SAVING_ERROR = 'SAVING_ERROR';
+    private const SAVING_ERROR = 'SAVING_ERROR';
 
-    public const NO_RECORD_ERROR = 'NO_RECORD_ERROR';
+    private const NO_RECORD_ERROR = 'NO_RECORD_ERROR';
 
-    public const REQUEST_DATA_VALIDATION_ERROR = 'REQUEST_DATA_VALIDATION_ERROR';
+    private const REQUEST_DATA_VALIDATION_ERROR = 'REQUEST_DATA_VALIDATION_ERROR';
 
-    private static $messages = [
-        self::SAVING_ERROR => 'Не удалось сохранить запись',
-        self::NO_RECORD_ERROR => 'Не удалось найти запись',
-        self::REQUEST_DATA_VALIDATION_ERROR => 'В запросе переданы неверные данные',
-    ];
+    private const SERVICE_UNAVAILABLE = 'SERVICE_UNAVAILABLE';
 
     /**
-     * @param string $code
-     *
-     * @return string
+     * @return ErrorCode
      */
-    public static function getMessage(string $code): string
+    public static function savingError(): ErrorCode
     {
-        return self::$messages[$code];
+        return new self(self::SAVING_ERROR);
+    }
+
+    /**
+     * @return ErrorCode
+     */
+    public static function noRecordError(): ErrorCode
+    {
+        return new self(self::NO_RECORD_ERROR);
+    }
+
+    /**
+     * @return ErrorCode
+     */
+    public static function requestDataValidationError(): ErrorCode
+    {
+        return new self(self::REQUEST_DATA_VALIDATION_ERROR);
+    }
+
+    /**
+     * @return ErrorCode
+     */
+    public static function serviceUnavailable(): ErrorCode
+    {
+        return new self(self::SERVICE_UNAVAILABLE);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getNameList(): array
+    {
+        return [
+            self::SAVING_ERROR => 'Не удалось сохранить запись',
+            self::NO_RECORD_ERROR => 'Не удалось найти запись',
+            self::REQUEST_DATA_VALIDATION_ERROR => 'В запросе переданы неверные данные',
+            self::SERVICE_UNAVAILABLE => 'Сервис недоступен',
+        ];
     }
 }

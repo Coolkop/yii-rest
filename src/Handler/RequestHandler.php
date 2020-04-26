@@ -11,10 +11,22 @@ use Coolkop\Rest\Exception\NotFoundException;
 use Coolkop\Rest\Exception\RepositoryException;
 use Coolkop\Rest\Exception\ServiceException;
 use Coolkop\Rest\Service\ServiceInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Yii;
 
 class RequestHandler implements RequestHandlerInterface
 {
+    use LoggerAwareTrait;
+
+    /**
+     * @param LoggerInterface $logger
+     */
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->setLogger($logger);
+    }
+
     /**
      * @inheritDoc
      */
@@ -23,7 +35,8 @@ class RequestHandler implements RequestHandlerInterface
         try {
             return $service->perform($request);
         } catch (ServiceException | NotFoundException | RepositoryException $exception) {
-            Yii::$app->errorHandler->logException($exception);
+            $this->logger->warning($exception->getMessage(), ['exception' => $exception]);
+
             Yii::$app->response->setStatusCode($exception->getHttpCode());
 
             return (new ErroneousResponse())

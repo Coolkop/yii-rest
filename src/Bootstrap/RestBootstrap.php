@@ -6,6 +6,7 @@ namespace Coolkop\Rest\Bootstrap;
 
 use Coolkop\Rest\Handler\RequestHandler;
 use Coolkop\Rest\Handler\RequestHandlerInterface;
+use Coolkop\Rest\Logger\Logger;
 use Yii;
 use yii\base\BootstrapInterface;
 
@@ -20,7 +21,11 @@ class RestBootstrap implements BootstrapInterface
 
         $container->setSingleton(
             RequestHandlerInterface::class,
-            RequestHandler::class
+            static function (): RequestHandlerInterface {
+                return new RequestHandler(
+                    Yii::createObject(Logger::class)
+                );
+            }
         );
     }
 }

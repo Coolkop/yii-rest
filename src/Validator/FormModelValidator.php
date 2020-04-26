@@ -5,9 +5,9 @@ namespace Coolkop\Rest\Validator;
 
 
 use Coolkop\Rest\Dto\Request\RequestInterface;
-use Coolkop\Rest\Dto\Response\ViolationInterface;
 use Coolkop\Rest\Dto\Response\ResponseInterface;
 use Coolkop\Rest\Dto\Response\Violation;
+use Coolkop\Rest\Dto\Response\ViolationInterface;
 use Coolkop\Rest\Dto\Response\ViolationListResponse;
 use Coolkop\Rest\Enumeration\ErrorCode;
 use yii\base\Model;
@@ -47,9 +47,11 @@ abstract class FormModelValidator extends Model implements RequestValidatorInter
      */
     public function getErrorResponse(): ResponseInterface
     {
+        $error = ErrorCode::requestDataValidationError();
+
         return (new ViolationListResponse())
-            ->setCode(ErrorCode::REQUEST_DATA_VALIDATION_ERROR)
-            ->setMessage(ErrorCode::getMessage(ErrorCode::REQUEST_DATA_VALIDATION_ERROR))
+            ->setCode($error->getValue())
+            ->setMessage($error->getName())
             ->setViolationList(
                 $this->createErrorList()
             );

@@ -16,13 +16,10 @@ trait GuardNoResult
      * @return void
      * @throws NotFoundException
      */
-    private function guard(ActiveRecord $activeRecord = null): void
+    private function guardNoResult(ActiveRecord $activeRecord = null): void
     {
         if (null === $activeRecord) {
-            throw new NotFoundException(
-                ErrorCode::getMessage(ErrorCode::NO_RECORD_ERROR),
-                ErrorCode::NO_RECORD_ERROR
-            );
+            throw new NotFoundException(ErrorCode::savingError());
         }
     }
 }
