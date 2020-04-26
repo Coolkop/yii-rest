@@ -11,7 +11,7 @@
 
 #### Добавление эндпойнта
 Эндпойнт добавляется с помощью конфигурации бутстрап класса:
-```
+```php
 $container->setSingleton(
     UpdateController::class,
     [
@@ -25,6 +25,101 @@ $container->setSingleton(
         ]),
     ]
 );
+```
+
+Или с помощью реализации
+`\Coolkop\Rest\Bootstrap\Endpoint\BaseEndpointBootstrap`
+и `\Coolkop\Rest\Bootstrap\Endpoint\CompositeConfigurator`
+
+```php
+final class AuthBundleBootstrap implements BootstrapInterface
+{
+    /**
+     * @inheritDoc
+     */
+    public function bootstrap($app)
+    {
+        $container = Yii::$container;
+
+        $this->getEndpointComposite()->bootstrap($app, $container);
+    }
+
+    /**
+     * @return EndpointBootstrapInterface
+     */
+    private function getEndpointComposite(): EndpointBootstrapInterface
+    {
+        return new CompositeConfigurator([
+            new SignUp(),
+            new CheckAccess(),
+        ]);
+    }
+}
+
+final class SignUp extends BaseEndpointBootstrap
+{
+    /**
+     * @inheritDoc
+     */
+    protected function getControllerClassName(): string
+    {
+        return SignUpController::class;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getService(Application $app, Container $container): ServiceInterface
+    {
+        return
+            new MailingDecorator(
+                new TransactionalDecorator(
+                    new AuthAssigningDecorator(
+                        Yii::createObject(Service::class),
+                        Yii::createObject(ManagerInterface::class)
+                    )
+                ),
+                Yii::createObject(UserRepository::class),
+                Yii::createObject(TokenGenerator::class),
+                Yii::createObject(SendActivationEmail::class),
+                Yii::createObject(LoggerInterface::class)
+            );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getRequestValidator(Application $app, Container $container): RequestValidatorInterface
+    {
+        return Yii::createObject(Validator::class);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getRequestDataExtractor(Application $app, Container $container): RequestDataExtractorInterface
+    {
+        return Yii::createObject(BodyParams::class);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function setAdditionalConfig(Application $app, Container $container): void
+    {
+        $container
+            ->setSingleton(
+                SendActivationEmail::class,
+                static function () use ($app): SendActivationEmail {
+                    return new SendActivationEmail(
+                        'Subject',
+                        $app->get('frontendUrlManager'),
+                        Yii::createObject(MessageComposer::class)
+                    );
+                }
+            );
+    }
+}
 ```
 
 Добавить пустой класс, реализующий
@@ -68,3 +163,7 @@ $container->setSingleton(
 
 Для автосериализации на основе рефлекции есть трейт
 `\Coolkop\Rest\Service\SerializableResponseTrait`
+
+#### Обработка ошибок
+Для приведения ошибок Yii2 к стандарнтному для этой библиотеки виду можно подключить 
+`\Coolkop\Rest\ErrorHandler\ErrorHandler`

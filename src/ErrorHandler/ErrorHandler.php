@@ -6,6 +6,7 @@ namespace Coolkop\Rest\ErrorHandler;
 
 use Coolkop\Rest\Dto\Response\ErroneousResponse;
 use Coolkop\Rest\Dto\Response\ResponseInterface;
+use Coolkop\Rest\Enumeration\BaseEnumeration;
 use Coolkop\Rest\Enumeration\ErrorCode;
 use Yii;
 use yii\base\ErrorHandler as BaseErrorHandler;
@@ -14,20 +15,9 @@ use yii\web\HttpException;
 final class ErrorHandler extends BaseErrorHandler
 {
     /**
-     * @var CodeResolver
+     * @var string
      */
-    private $codeResolver;
-
-    /**
-     * @param CodeResolver $codeResolver
-     * @param array $config
-     */
-    public function __construct(CodeResolver $codeResolver, $config = [])
-    {
-        parent::__construct($config);
-
-        $this->codeResolver = $codeResolver;
-    }
+    public $errorCodeResolverClassName;
 
     /**
      * @inheritDoc
@@ -39,7 +29,7 @@ final class ErrorHandler extends BaseErrorHandler
         if ($exception instanceof HttpException) {
             $response->setStatusCode($exception->statusCode);
 
-            $errorCode = $this->codeResolver->resolve($exception->statusCode);
+            $errorCode = $this->getErrorCodeResolver()->resolve($exception->statusCode);
 
             if (null !== $errorCode) {
                 $response->data = $this->createResponseWithErrorCode($errorCode);
@@ -62,14 +52,22 @@ final class ErrorHandler extends BaseErrorHandler
     }
 
     /**
-     * @param ErrorCode $errorCode
+     * @param BaseEnumeration $errorCode
      *
      * @return ResponseInterface
      */
-    private function createResponseWithErrorCode(ErrorCode $errorCode): ResponseInterface
+    private function createResponseWithErrorCode(BaseEnumeration $errorCode): ResponseInterface
     {
         return (new ErroneousResponse())
             ->setMessage($errorCode->getName())
             ->setCode($errorCode->getValue());
+    }
+
+    /**
+     * @return ErrorCodeResolverInterface
+     */
+    private function getErrorCodeResolver(): ErrorCodeResolverInterface
+    {
+        return Yii::createObject($this->errorCodeResolverClassName);
     }
 }
