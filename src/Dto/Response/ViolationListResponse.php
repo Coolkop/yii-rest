@@ -30,4 +30,16 @@ class ViolationListResponse extends ErroneousResponse
 
         return $this;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'code' => $this->getCode(),
+            'message' => $this->getMessage(),
+            'violationList' => $this->getViolationList(),
+        ];
+    }
 }

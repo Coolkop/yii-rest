@@ -14,6 +14,8 @@ final class ErrorCode extends BaseEnumeration
 
     private const SERVICE_UNAVAILABLE = 'SERVICE_UNAVAILABLE';
 
+    private const UNAUTHORIZED_REQUEST = 'UNAUTHORIZED_REQUEST';
+
     /**
      * @return ErrorCode
      */
@@ -47,6 +49,14 @@ final class ErrorCode extends BaseEnumeration
     }
 
     /**
+     * @return ErrorCode
+     */
+    public static function unauthorizedRequest(): ErrorCode
+    {
+        return new self(self::UNAUTHORIZED_REQUEST);
+    }
+
+    /**
      * @inheritDoc
      */
     protected function getNameList(): array
@@ -56,6 +66,7 @@ final class ErrorCode extends BaseEnumeration
             self::NO_RECORD_ERROR => 'Не удалось найти запись',
             self::REQUEST_DATA_VALIDATION_ERROR => 'В запросе переданы неверные данные',
             self::SERVICE_UNAVAILABLE => 'Сервис недоступен',
+            self::UNAUTHORIZED_REQUEST => 'Ошибка авторизации. Нет доступа',
         ];
     }
 }
