@@ -19,7 +19,7 @@ trait GuardNoResult
     private function guardNoResult(ActiveRecord $activeRecord = null): void
     {
         if (null === $activeRecord) {
-            throw new NotFoundException(ErrorCode::savingError());
+            throw new NotFoundException(ErrorCode::noRecordError());
         }
     }
 }

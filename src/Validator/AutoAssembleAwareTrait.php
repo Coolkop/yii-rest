@@ -15,7 +15,13 @@ trait AutoAssembleAwareTrait
     {
         foreach ($data as $property => $value) {
             if (property_exists(static::class, $property)) {
-                $this->{$property} = $value;
+                $setterMethodName = sprintf('set%s', ucfirst($property));
+
+                if (method_exists($this, $setterMethodName)) {
+                    $this->{$setterMethodName}($value);
+                } else {
+                    $this->{$property} = $value;
+                }
             }
         }
     }
