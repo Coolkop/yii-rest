@@ -11,7 +11,7 @@ trait AutoAssembleAwareTrait
      *
      * @return void
      */
-    public function setDate(array $data): void
+    public function setData(array $data): void
     {
         foreach ($data as $property => $value) {
             if (property_exists(static::class, $property)) {

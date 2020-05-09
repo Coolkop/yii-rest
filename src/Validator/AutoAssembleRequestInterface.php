@@ -13,5 +13,5 @@ interface AutoAssembleRequestInterface extends RequestInterface
      *
      * @return void
      */
-    public function setDate(array $data): void;
+    public function setData(array $data): void;
 }

@@ -16,6 +16,8 @@ final class ErrorCode extends BaseEnumeration
 
     private const UNAUTHORIZED_REQUEST = 'UNAUTHORIZED_REQUEST';
 
+    private const UNSUPPORTED_ENUMERATION_VALUE = 'UNSUPPORTED_ENUMERATION_VALUE';
+
     /**
      * @return ErrorCode
      */
@@ -57,6 +59,14 @@ final class ErrorCode extends BaseEnumeration
     }
 
     /**
+     * @return ErrorCode
+     */
+    public static function unsupportedEnumerationValue(): ErrorCode
+    {
+        return new self(self::UNSUPPORTED_ENUMERATION_VALUE);
+    }
+
+    /**
      * @inheritDoc
      */
     protected function getNameList(): array
@@ -67,6 +77,7 @@ final class ErrorCode extends BaseEnumeration
             self::REQUEST_DATA_VALIDATION_ERROR => 'В запросе переданы неверные данные',
             self::SERVICE_UNAVAILABLE => 'Сервис недоступен',
             self::UNAUTHORIZED_REQUEST => 'Ошибка авторизации. Нет доступа',
+            self::UNSUPPORTED_ENUMERATION_VALUE => 'Неподдерживаемое значения для перечисления',
         ];
     }
 }

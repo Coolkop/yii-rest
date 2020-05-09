@@ -14,6 +14,6 @@ class RequestModifier
      */
     public function modify(AutoAssembleRequestInterface $request, array $data): void
     {
-        $request->setDate($data);
+        $request->setData($data);
     }
 }

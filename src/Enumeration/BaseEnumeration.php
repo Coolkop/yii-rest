@@ -4,6 +4,8 @@
 namespace Coolkop\Rest\Enumeration;
 
 
+use Coolkop\Rest\Exception\FatalException;
+
 abstract class BaseEnumeration
 {
     /**
@@ -16,7 +18,33 @@ abstract class BaseEnumeration
      */
     final public function __construct($value)
     {
+        $this->guardValue($value);
+
         $this->value = $value;
+    }
+
+    /**
+     * @param string|int $value
+     *
+     * @return static
+     */
+    final public static function createByValue($value): self
+    {
+        return new static($value);
+    }
+
+    /**
+     * @param BaseEnumeration|mixed $value
+     *
+     * @return bool
+     */
+    final public function equal($value): bool
+    {
+        if ($value instanceof self) {
+            return $this->value === $value->getValue();
+        }
+
+        return $this->value === $value;
     }
 
     /**
@@ -39,4 +67,17 @@ abstract class BaseEnumeration
      * @return string[]
      */
     abstract protected function getNameList(): array;
+
+    /**
+     * @param string|int $value
+     *
+     * @return void
+     * @throws FatalException
+     */
+    private function guardValue($value): void
+    {
+        if (!isset($this->getNameList()[$value])) {
+            throw new FatalException(ErrorCode::unsupportedEnumerationValue());
+        }
+    }
 }
