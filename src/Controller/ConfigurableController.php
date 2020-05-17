@@ -10,6 +10,7 @@ use Coolkop\Rest\Handler\RequestHandlerInterface;
 use Coolkop\Rest\Service\ServiceInterface;
 use Coolkop\Rest\Validator\RequestValidatorInterface;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\rest\Controller;
 
 class ConfigurableController extends Controller
@@ -40,6 +41,12 @@ class ConfigurableController extends Controller
     public function init(): void
     {
         $this->requestHandler = Yii::createObject(RequestHandlerInterface::class);
+
+        if (null === $this->validator || null === $this->service) {
+            throw new InvalidConfigException(
+                sprintf("Service and Validator has to be config for '%s'", get_class($this))
+            );
+        }
     }
 
     /**

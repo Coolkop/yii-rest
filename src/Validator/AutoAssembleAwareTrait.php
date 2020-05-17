@@ -14,7 +14,7 @@ trait AutoAssembleAwareTrait
     public function setData(array $data): void
     {
         foreach ($data as $property => $value) {
-            if (property_exists(static::class, $property)) {
+            if (property_exists($this, $property)) {
                 $setterMethodName = sprintf('set%s', ucfirst($property));
 
                 if (method_exists($this, $setterMethodName)) {
